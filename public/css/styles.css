@@ -1,0 +1,36 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    transition: none;
+}
+body{
+    height: 100vh;
+}
+
+nav{
+    background-color: aliceblue;
+    
+    height: 10vh;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mainHeading > h1{
+    font-size: 2rem;
+    font-weight: 400;
+    padding-left: 2vw;
+    color: gray;
+.mainLinkContainer{
+    width: 50%;
+
+    padding-right: 2vw;
+    display: flex;
+    justify-content: space-around;
+
+    font-size: 1.5rem;
+}
