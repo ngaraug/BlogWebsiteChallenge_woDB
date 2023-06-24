@@ -16,11 +16,49 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({extended:true}))
 
 
-const homeStartingContent  = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati rem incidunt enim porro illo sit reprehenderit molestias, repellendus, necessitatibus odit tempora quas? Expedita, enim saepe tempore voluptatem quisquam suscipit illo?"
+const homeStartingContent  = "Today is a brand new day filled with endless possibilities. It's time to embark on a journey of self-reflection, inspiration, and personal growth. Let your thoughts flow onto these pages and watch as they transform into meaningful words, capturing the essence of your unique experiences.  <br> <br> -Happy Journaling!"
 
+
+const aboutContent = "At The Daily Journal, we believe in the power of introspection and self-expression. We understand that life is a beautiful and complex tapestry, woven together by our experiences, emotions, and aspirations. That's why we created this platform—a place where you can reflect, discover, and grow.<br> <br> Our mission is to provide you with a sanctuary for your thoughts, where you can freely explore your inner landscape and document your personal journey. We believe that journaling is not just a mere act of writing; it's a transformative practice that can unlock your creativity, enhance self-awareness, and promote emotional well-being. <br> <br> -Happy Journaling!"
+
+
+const contactContent = "We would love to hear from you! <br> <br>At The Daily Journal, we value your feedback, suggestions, and inquiries. Please don't hesitate to reach out to us using the contact information provided below. Our dedicated team is here to assist you and ensure you have the best journaling experience possible."
+
+let posts = []
 
 app.get('/', (req, res)=>{
-    res.render('home', {homeStartingContent: homeStartingContent})
+    res.render('home', {homeStartingContent: homeStartingContent, posts:posts})
 })
+
+app.get('/about', (req, res)=>{
+    res.render('about', {aboutContent: aboutContent})
+})
+
+app.get('/contact', (req, res)=>{
+    res.render('contact', {contactContent : contactContent})
+})
+app.get('/compose', (req, res)=>{
+    res.render('compose')
+})
+
+// Get request using route parameters to route to an indivisual page for a post
+app.get('/posts/:postId', (req, res)=>{      
+    const positionOfPost = posts.indexOf(req.params.postId)
+    if (positionOfPost === undefined){
+        console.log("Not found")
+    }else{
+        console.log("Match found")
+    }
+})    
+
+app.post('/compose', (req, res)=>{
+    const post = {
+        title : req.body.postTitle,
+        content: req.body.postContent
+    }
+    posts.push(post)
+    res.redirect("/")
+})
+
 
 app.listen(3000, ()=>console.log("Server started on port 3000"))
