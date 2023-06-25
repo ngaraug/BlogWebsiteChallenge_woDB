@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
-import ejs, { render } from 'ejs'
+import ejs, { render } from 'ejs';
+import _ from 'lodash';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -43,18 +44,25 @@ app.get('/compose', (req, res)=>{
 
 // Get request using route parameters to route to an indivisual page for a post
 app.get('/posts/:postId', (req, res)=>{      
-    const positionOfPost = posts.indexOf(req.params.postId)
-    if (positionOfPost === undefined){
-        console.log("Not found")
-    }else{
-        console.log("Match found")
+    let postId = req.params.postId
+    postId = _.kebabCase(postId)
+    var kebabPostTitle = ''
+    for(post in posts){
+        kebabPostTitle = _.kebabCase(posts[post].title)
+        if(postId === kebabPostTitle){
+            console.log("Found")
+            res.render('post', {title: posts[post].title, content: posts[post].content})
+
+        }
     }
 })    
 
 app.post('/compose', (req, res)=>{
+    const truncate = req.body.postContent.substring(0,150)
     const post = {
         title : req.body.postTitle,
-        content: req.body.postContent
+        content: req.body.postContent,
+        truncatedContent: truncate
     }
     posts.push(post)
     res.redirect("/")
